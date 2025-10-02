@@ -1,0 +1,733 @@
+ 
+FALL SEM 2025-2026 (SCOPE) 
+LAB EXPERIMENT REPORT 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Student Registration Number: [REGISTRATION_ID] 
+Student Name: [PERSON]: Operating Systems Lab 
+Lab Slot: L28+29 
+ 
+ten 
+ohoud 
+Rasng 
+dimaphies 
+Conum 
+leelers 
+ame 
+Quewes 
+put 
+nlo a 
+. 
+ttaee denmaphces 
+lasie 
+2) 
+ma 
+mitl 
+elusin 
+pladees dont 
+udet 
+dont 
+sinllinoy 
+Contms 
+cemmem 
+Uahuaens 
+damaphs 
+t 
+talle alermalny 
+alend 
+a 
+hay meed 
+tun 
+bl 
+eadads. 
+[PERSON] chon 
+A. IPC Using Semaphore- Producer and 
+[PERSON]: 
+import java.util.LinkedList; 
+import java.util.Queue; 
+import java.util.concurrent.Semaphore; 
+ 
+public class ProducerConsumer { 
+    private static final int BUFFER_SIZE = 5; 
+    private static Queue<Integer> buffer = new LinkedList<>(); 
+     
+     
+    private static Semaphore empty = new [PRODUCT](BUFFER_SIZE); 
+     
+    private static Semaphore full = new [PRODUCT](0); 
+    
+    private static Semaphore mutex = new [PRODUCT](1); 
+ 
+    static class Producer extends Thread { 
+        private int id; 
+         
+        public Producer(int id) { 
+            this.id = id; 
+        } 
+         
+        public void run() { 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  6 
+ 
+            for (int i = 0; i < 5; i++) { 
+                try { 
+                    empty.acquire();  
+                    mutex.acquire();  
+                     
+                    int item = (int)(Math.random() * 100); 
+                    buffer.add(item); 
+                    System.out.println("Producer " + id + " produced: " + item +  
+                                     " | Buffer size: " + buffer.size()); 
+                     
+                    mutex.release(); 
+                    full.release();  
+                     
+                    Thread.sleep((int)(Math.random() * 1000)); 
+                } catch (InterruptedException e) { 
+                    e.printStackTrace(); 
+                } 
+            } 
+        } 
+    } 
+ 
+    static class Consumer extends Thread { 
+        private int id; 
+         
+        public Consumer(int id) { 
+            this.id = id; 
+        } 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  7 
+ 
+         
+        public void run() { 
+            for (int i = 0; i < 5; i++) { 
+                try { 
+                    full.acquire();  
+                    mutex.acquire();  
+                     
+                    int item = buffer.remove(); 
+                    System.out.println("Consumer " + id + " consumed: " + item +  
+                                     " | Buffer size: " + buffer.size()); 
+                     
+                    mutex.release(); 
+                    empty.release();  
+                     
+                    Thread.sleep((int)(Math.random() * 1000)); 
+                } catch (InterruptedException e) { 
+                    e.printStackTrace(); 
+                } 
+            } 
+        } 
+    } 
+ 
+    public static void main(String[] args) { 
+        System.out.println("=== [PERSON] ==="); 
+         
+        Producer p1 = new Producer(1); 
+        Producer p2 = new Producer(2); 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  8 
+ 
+        Consumer c1 = new Consumer(1); 
+        Consumer c2 = new Consumer(2); 
+         
+        p1.start(); 
+        p2.start(); 
+        c1.start(); 
+        c2.start(); 
+         
+        try { 
+            p1.join(); 
+            p2.join(); 
+            c1.join(); 
+            c2.join(); 
+        } catch (InterruptedException e) { 
+            e.printStackTrace(); 
+        } 
+         
+        System.out.println("All producers and consumers finished."); 
+    } 
+} 
+ 
+ 
+ 
+ 
+ 
+ 
+OUTPUT: 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  9 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+10 
+ 
+B. IPC Using Semaphore – Readers and Writers 
+Problem 
+CODE: 
+import java.util.*; 
+ 
+public class Main { 
+    private static int sharedData = 0; 
+    private static int readersCount = 0; 
+    private static Semaphore mutex = new Semaphore(1); 
+    private static Semaphore writeLock = new [PRODUCT](1); 
+    static class Reader extends Thread { 
+        private int id; 
+        public Reader(int id) { 
+            this.id = id; 
+        } 
+         
+        public void run() { 
+            for (int i = 0; i < 3; i++) { 
+                try { 
+                    mutex.acquire(); 
+                    readersCount++; 
+                    if (readersCount == 1) { 
+                        writeLock.acquire();  
+                    } 
+                    mutex.release(); 
+                    System.out.println("Reader " + id + " is reading: " + sharedData); 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+11 
+ 
+                    Thread.sleep((int)(Math.random() * 500)); 
+                    mutex.acquire(); 
+                    readersCount--; 
+                    if (readersCount == 0) { 
+                        writeLock.release();  
+                    } 
+                    mutex.release(); 
+                     
+                    Thread.sleep((int)(Math.random() * 1000)); 
+                } catch (InterruptedException e) { 
+                    e.printStackTrace(); 
+                } 
+            } 
+        } 
+    } 
+ 
+    static class Writer extends Thread { 
+        private int id; 
+         
+        public Writer(int id) { 
+            this.id = id; 
+        } 
+         
+        public void run() { 
+            for (int i = 0; i < 3; i++) { 
+                try { 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+12 
+ 
+                    writeLock.acquire();  
+                     
+                    sharedData++; 
+                    System.out.println("Writer " + id + " is writing: " + sharedData); 
+                    Thread.sleep((int)(Math.random() * 800)); 
+                    writeLock.release(); 
+                    Thread.sleep((int)(Math.random() * 1500)); 
+                } catch (InterruptedException e) { 
+                    e.printStackTrace(); 
+                } 
+            } 
+        } 
+    } 
+ 
+    public static void main(String[] args) { 
+        System.out.println("=== Readers-Writers Problem ==="); 
+ 
+        Reader r1 = new Reader(1); 
+        Reader r2 = new Reader(2); 
+        Reader r3 = new Reader(3); 
+        Writer w1 = new Writer(1); 
+        Writer w2 = new Writer(2); 
+        r1.start(); 
+        r2.start(); 
+        r3.start(); 
+        w1.start(); 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+13 
+ 
+        w2.start(); 
+         
+        try { 
+            r1.join(); 
+            r2.join(); 
+            r3.join(); 
+            w1.join(); 
+            w2.join(); 
+        } catch (InterruptedException e) { 
+            e.printStackTrace(); 
+        } 
+         
+        System.out.println("Final shared data value: " + sharedData); 
+    } 
+} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+14 
+ 
+OUTPUT: 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+15 
+ 
+C. IPC Using Semaphore – Dining Philosophers 
+Problem 
+CODE: 
+import java.util.concurrent.Semaphore; 
+ 
+public class DiningPhilosophers { 
+    private static final int NUM_PHILOSOPHERS = 5; 
+    private static Semaphore[] forks = new Semaphore[NUM_PHILOSOPHERS]; 
+    private static Semaphore dining = new Semaphore(NUM_PHILOSOPHERS - 1);  
+    static class Philosopher extends Thread { 
+        private int id; 
+         
+        public Philosopher(int id) { 
+            this.id = id; 
+        } 
+         
+        private int leftFork() { 
+            return id; 
+        } 
+         
+        private int rightFork() { 
+            return (id + 1) % NUM_PHILOSOPHERS; 
+        } 
+         
+        public void run() { 
+            for (int i = 0; i < 3; i++) { 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+16 
+ 
+                try { 
+                    think(); 
+                    eat(); 
+                } catch (InterruptedException e) { 
+                    e.printStackTrace(); 
+                } 
+            } 
+        } 
+         
+        private void [REGISTRATION_ID]() throws InterruptedException { 
+            System.out.println("Philosopher " + id + " is thinking"); 
+            Thread.sleep((int)(Math.random() * 1000)); 
+        } 
+         
+        private void eat() throws InterruptedException { 
+            dining.acquire();  
+            forks[left[PRODUCT]()].acquire(); 
+            System.out.println("Philosopher " + id + " picked up left fork " + leftFork()); 
+             
+            forks[[ORG]()].acquire(); 
+            System.out.println("Philosopher " + id + " picked up right fork " + rightFork() +  
+                             " and is eating"); 
+             
+            Thread.sleep((int)(Math.random() * 800)); 
+             
+            forks[[ORG]()].release(); 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+17 
+ 
+            System.out.println("Philosopher " + id + " put down right fork " + rightFork()); 
+             
+            forks[[ORG]()].release(); 
+            System.out.println("Philosopher " + id + " put down left fork " + leftFork()); 
+             
+            dining.release(); 
+        } 
+    } 
+ 
+    public static void main(String[] args) { 
+        System.out.println("=== Dining Philosophers Problem ==="); 
+         
+         
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++) { 
+            forks[i] = new Semaphore(1); 
+        } 
+         
+        Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS]; 
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++) { 
+            philosophers[i] = new [WORK_OF_ART](i); 
+            philosophers[i].start(); 
+        } 
+         
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++) { 
+            try { 
+                philosophers[i].join(); 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+18 
+ 
+            } catch (InterruptedException e) { 
+                e.printStackTrace(); 
+            } 
+        } 
+         
+        System.out.println("All philosophers have finished dining."); 
+    } 
+} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+OUTPUT: 
+ 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+19 
+ 
+ 
+ 
+ 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+20 
+ 
+ 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+21 
+ 
+D. IPC using Pipes. 
+CODE: 
+import java.io.PipedInputStream; 
+import java.io.PipedOutputStream; 
+import java.io.IOException; 
+ 
+public class PipeCommunication { 
+     
+    static class Producer extends Thread { 
+        private PipedOutputStream output; 
+         
+        public Producer(PipedOutputStream output) { 
+            this.output = output; 
+        } 
+         
+        public void run() { 
+            try { 
+                for (int i = 1; i <= 5; i++) { 
+                    String message = "Message " + i; 
+                    output.write(message.getBytes()); 
+                    System.out.println("Producer sent: " + message); 
+                    Thread.sleep(500); 
+                } 
+                output.close(); 
+            } catch (IOException | InterruptedException e) { 
+                e.printStackTrace(); 
+            } 
+        } 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+22 
+ 
+    } 
+     
+    static class Consumer extends Thread { 
+        private PipedInputStream input; 
+         
+        public Consumer([ORG] input) { 
+            this.input = input; 
+        } 
+         
+        public void run() { 
+            try { 
+                int data; 
+                StringBuilder message = new [PRODUCT](); 
+                 
+                while ((data = input.read()) != -1) { 
+                    if (data == '\n') { 
+                        System.out.println("Consumer received: " + message.toString()); 
+                        message.setLength(0); 
+                    } else { 
+                        message.append((char) data); 
+                    } 
+                } 
+                 
+                 
+                if (message.length() > 0) { 
+                    System.out.println("Consumer received: " + message.toString()); 
+                } 
+                 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+23 
+ 
+                input.close(); 
+            } catch (IOException e) { 
+                e.printStackTrace(); 
+            } 
+        } 
+    } 
+     
+    static class MessageProducer extends Thread { 
+        private PipedOutputStream output; 
+         
+        public MessageProducer(PipedOutputStream output) { 
+            this.output = output; 
+        } 
+         
+        public void run() { 
+            try { 
+                String[] messages = { 
+                    "Hello from Producer!", 
+                    "[WORK_OF_ART], 
+                    "[PERSON], 
+                    "End of communication" 
+                }; 
+                 
+                for (String message : messages) { 
+                    output.write((message + "\n").getBytes()); 
+                    System.out.println("[PERSON] sent: " + message); 
+                    Thread.sleep(300); 
+                } 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+24 
+ 
+                output.close(); 
+            } catch (IOException | InterruptedException e) { 
+                e.printStackTrace(); 
+            } 
+        } 
+    } 
+     
+    static class MessageConsumer extends Thread { 
+        private PipedInputStream input; 
+         
+        public MessageConsumer(PipedInputStream input) { 
+            this.input = input; 
+        } 
+         
+        public void run() { 
+            try { 
+                byte[] buffer = new byte[1024]; 
+                int bytesRead; 
+                 
+                while ((bytesRead = input.read(buffer)) != -1) { 
+                    String received = new String(buffer, 0, bytesRead); 
+                    System.out.println("[PERSON] received: " + received.trim()); 
+                } 
+                input.close(); 
+            } catch (IOException e) { 
+                e.printStackTrace(); 
+            } 
+        } 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+25 
+ 
+    } 
+ 
+    public static void main(String[] args) { 
+        System.out.println("=== IPC Using Pipes ==="); 
+         
+        try { 
+            
+            PipedOutputStream pos1 = new PipedOutputStream(); 
+            PipedInputStream pis1 = new [PRODUCT](pos1); 
+             
+            Producer producer = new [WORK_OF_ART](pos1); 
+            Consumer consumer = new Consumer(pis1); 
+             
+            producer.start(); 
+            consumer.start(); 
+             
+            producer.join(); 
+            consumer.join(); 
+             
+            System.out.println("\n=== [WORK_OF_ART] ==="); 
+             
+            
+            PipedOutputStream pos2 = new PipedOutputStream(); 
+            PipedInputStream pis2 = new [PRODUCT](pos2); 
+             
+            MessageProducer msgProducer = new MessageProducer(pos2); 
+            MessageConsumer msgConsumer = new [WORK_OF_ART](pis2); 
+             
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+26 
+ 
+            msgProducer.start(); 
+            msgConsumer.start(); 
+             
+            msgProducer.join(); 
+            msgConsumer.join(); 
+             
+        } catch (IOException | InterruptedException e) { 
+            e.printStackTrace(); 
+        } 
+         
+        System.out.println("Pipe communication completed."); 
+    } 
+} 
+ 
+OUTPUT: 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+27 
+ 
+ 
+---------------------   School of [PERSON] and Engineering, [PERSON]   ----------------------  
+28 
+ 
+
+Image 1:
+[PERSON] 2:
+2019 / 25
+Image 3:
+([PERSON]
+t Conmuniali hlalla amd lochniguts huu atos cilf aand symlranng Ipc methed [PERSON]
+moww
+Mesag
+gr
+ppes
+Mehansms
+emizatien
+[PERSON]-
+mmpmg
+[PERSON]
+山
+Aoihet
+533G
+maheuncuue andCoume [PERSON] mag boufenwhil Cahe data mny ame
+Image 4:
+C:\Windows\System32\cmd.exe
+[PERSON] [Version 10.0.19045.4894]
+(c) [ORG]. All rights reserved.
+Z:\os\exp-4>javac ProducerConsumer.java
+Z:\os\exp-4>java ProducerConsumer
+== [PERSON] ==:
+Producer 1 produced: 24
+Buffer size: 1
+Producer 2 produced: 87
+Buffer size:2
+Consumer 1 consumed: 24
+Buffer size: 1
+Consumer 2 consumed: 87
+Buffer size: 0
+Producer2 produced:3
+Buffer size: 1
+Consumer 1 consumed: 3
+Buffer size: 0
+Producer 1 produced: 48
+Buffer size: 1
+Producer 1 produced: 17
+Buffer size: 2
+Producer 2 produced: 59
+Buffer size: 3
+Consumer 1 consumed: 48
+Buffer size: 2
+Consumer 2 consumed: 17
+Buffer size: 1
+Consumer 1 consumed: 59
+Buffer size: 0
+Producer 2 produced: 67
+Buffer size: 1
+Consumer 2 consumed: 67
+Buffer size: 0
+Producer 1 produced: 56
+Buffer size: 1
+Consumer 1 consumed: 56
+Buffer size: 0
+Producer 1 produced: 97
+Buffer size: 1
+Producer 2 produced: 94
+Buffer size: 2
+Consumer 2 consumed: 97
+Buffer size: 1
+Consumer 2 consumed: 94
+Buffer size: 0
+All producers and consumers finished.
+Z:\0s\exp-4>+
+Image 5:
+0:4.
+C:\Windows\System32\cmd.exe
+[PERSON] [Version 10.0.19045.4894]
+(c) [ORG]. All rights reserved.
+Z:\os\exp-4>javac ReadersWriters.java
+Z:\os\exp-4>java ReadersWriters
+== Readers-Writers Problem ==:
+Reader 2 is reading: [WORK_OF_ART] is reading: [WORK_OF_ART] is reading: 0
+writer 1 is writing: 1
+Writer 2 is writing:
+[WORK_OF_ART] is reading:
+[WORK_OF_ART] is reading:
+[WORK_OF_ART] is writing:
+[WORK_OF_ART] is reading:
+[WORK_OF_ART] is reading: 3
+Writer 1 is writing: 4
+Writer 2 is writing: 5
+Writer 2 is writing: 6
+Final shared data value: 6
+Z: \os\exp-4>
+Image 6:
+C:\Windows\System32\cmd.exe [PERSON] [Version 10.0.19045.4894] (c） [ORG].All rights reserved. Z:\os\exp-4>javacDiningPhilosophers.java Z:\os\exp-4>javaDiningPhilosophers ==Dining Philosophers Problem === Philosopher 0 is thinking [WORK_OF_ART] is thinking [PERSON] is thinking [PERSON] is thinking [PERSON] is thinking [PERSON] picked up left fork 4 Philosopher 4 picked up right fork 0 and is eating Philosopher 1 picked up left fork 1 Philosopher 1 picked up right fork 2 and is eating Philosopher 4 put down right fork 0 Philosopher4putdownleftfork4 [PERSON] is thinking [PERSON] picked up left fork 3 Philosopher 3 picked up right fork 4 and is eating Philosopher 1 put down right fork 2 Philosopher 1 put down left fork 1 Philosopher 1 is thinking [PERSON] picked up left fork 2 Philosopher 1 picked up left fork 1 Philosopher 3 put down right fork 4 Philosopher 3 put down left fork 3 Philosopher 3 is thinking [PERSON] picked up left fork 4 Philosopher 0 picked up left fork 0 Philosopher 2 picked up right fork 3 and is eating Philosopher 2 put down right fork 3 Philosopher 2 put down left fork 2 Philosopher 1 picked up right fork 2 and is eating [PERSON] is thinking [PERSON] put down right fork 2 Philosopher 1 put down left fork 1 Philosopher 1 is thinking Philosopher 0 picked up right fork 1 and is eating Philosopher θ put down right fork 1 Philosopher θ put down left fork 0 Philosopher 0 is thinking Philosopher 4 picked up right fork 0 and is eating Philosopher 2 picked up left fork 2 Philosopher 2 picked up right fork 3 and is eating Philosopher 2 put down right fork 3 Philosopher 2 put down left fork 2 Philosopher 2 is thinking Philosopher 3 picked up left fork 3 Philosopher 2 picked up left fork 2 Philosopher 4 put down right fork 0 Philosopher 4 put down left fork 4 Philosopher 4 is thinking Philosopher θ picked up left fork 0 Philosopher 0 picked up right fork 1 and is eating Philosopher 3 picked up right fork 4 and is eating Philosopher θ put down right fork 1 Philosopher 0 put down left fork 0 Philosopher 0 is thinking [PERSON] picked up left fork 1 Philosopher 4 picked up left fork 4 Philosopher 3 put down right fork 4
+Image 7:
+C:\Windows\System32\cmd.exe Philosopher θ picked up right fork 1 and is eating Philosopher θ put down right fork 1 Philosopher 0 put down left fork 0 Philosopher 0 is thinking Philosopher 4 picked up right fork 0 and is eating Philosopher 2 picked up left fork 2 Philosopher 2 picked up right fork 3 and is eating Philosopher 2 put down right fork 3 Philosopher 2 put down left fork 2 Philosopher 2 is thinking Philosopher 3 picked up left fork 3 Philosopher 2 picked up left fork 2 Philosopher 4 put down right fork 0 Philosopher 4 put down left fork 4 Philosopher 4 is thinking Philosopher θ picked up left fork 0 Philosopher 0 picked up right fork 1 and is eating Philosopher 3 picked up right fork 4 and is eating Philosopher θ put down right fork 1 Philosopher 0 put down left fork 0 Philosopher θ is thinking [PERSON] picked up left fork 1 Philosopher 4 picked up left fork 4 Philosopher 3 put down right fork 4 Philosopher 4 picked up right fork 0 and is eating Philosopher 3 put down left fork 3 Philosopher 3 is thinking [PERSON] picked up right fork 3 and is eating Philosopher 2 put down right fork 3 Philosopher 2 put down left fork 2 Philosopher 1 picked up right fork 2 and is eating Philosopher 4 put down right fork 0 Philosopher 4 put down left fork 4 Philosopher θ picked up left fork 0 Philosopher 3 picked up left fork 3 Philosopher 3 picked up right fork 4 and is eating Philosopher 1 put down right fork 2 Philosopher 1 put down left fork 1 Philosopher θ picked up right fork 1 and is eating Philosopher 3 put down right fork 4 Philosopher 3 put down left fork 3 Philosopher 0 put down right fork 1 Philosopher θ put down left fork ① All philosophers have finished dining. Z:\os\exp-4>
+Image 8:
+[PERSON] [Version 10.0.19045.4894] (c) [ORG]. All rights reserved. Z:\os\exp-4>javac PipeCommunication.java Z:\os\exp-4>java PipeCommunication === IPC Using Pipes === Producer sent: Message 1 Producer sent: Message 2 Producer sent: Message 3 Producer sent: Message 4 Producer sent: Message 5 Consumer received: Message 1Message 2Message 3Message 4Message 5 == Message Communication with Pipes === [PERSON] sent: Hello from Producer! [PERSON] received: Hello from Producer! [PERSON] sent: This is [ORG] using pipes [PERSON] sent: [PERSON]/[PERSON] sent: End of communication [PERSON] received: This is [ORG] using pipes [PERSON]/[PERSON] of communication Pipe communication completed. Z: \os\exp-4>
