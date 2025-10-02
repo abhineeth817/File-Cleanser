@@ -30,6 +30,12 @@ def cleanse_text(text, *args, **kwargs):
     """Anonymizes PII from the given text using Presidio."""
     if not text or text.isspace():
         return ""
+    # Remove IP addresses using regex
+    import re
+    ipv4_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
+    ipv6_pattern = r'\b(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}\b'
+    text = re.sub(ipv4_pattern, '<IP_ADDRESS>', text)
+    text = re.sub(ipv6_pattern, '<IP_ADDRESS>', text)
     results = analyzer.analyze(text=text, language="en")
     anonymized_result = anonymizer.anonymize(text=text, analyzer_results=results)
     return anonymized_result.text
