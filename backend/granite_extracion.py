@@ -36,13 +36,6 @@ def extract_pptx_granite(file_path, upload_id=None):
     converter = DocumentConverter(format_options={input_format: format_option})
     doc = converter.convert(file_path).document
     
-
-    # ...existing PPTX extraction logic...
-    # (copy the PPTX block from above here)
-    # For brevity, you can move the PPTX logic here
-    # Return output as string
-    # ...existing code...
-    # (for now, just return doc.text)
     output = []
     texts = getattr(doc, "texts", [])
     para_map = {}

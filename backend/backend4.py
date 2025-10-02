@@ -1,25 +1,15 @@
+
 import os
 import threading
 import time
-import zipfile
-import tempfile
-import shutil
-import re
 import docx
 import csv
-import fitz  # PyMuPDF for PDFs
 import backend34 as b34
 from flask import app, jsonify, request, send_file, Flask
 from flask_cors import CORS
 import openpyxl
-import stanza  # for NER
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
-from docling.datamodel.base_models import InputFormat
-from docling.datamodel.pipeline_options import VlmPipelineOptions
-from docling.datamodel.vlm_model_specs import GRANITEDOCLING_TRANSFORMERS
-from docling.document_converter import DocumentConverter, PdfFormatOption, PowerpointFormatOption, ImageFormatOption
-from docling.pipeline.vlm_pipeline import VlmPipeline
 from streamlit import progress
 import granite_extracion as ge
 
@@ -58,6 +48,9 @@ def extract_csv(file_path):
             text += " ".join([str(cell) for cell in row if cell]) + "\n"
     return text
 
+def extract_txt(file_path):
+    with open(file_path, "r", encoding="utf-8") as f:
+        return f.read()
 
 def extract_xlsx(file_path):
     wb = openpyxl.load_workbook(file_path)
@@ -69,7 +62,7 @@ def extract_xlsx(file_path):
     return text
 
 # Dispatcher
-def process_file(file_path, upload_id=None):
+def process_file(file_path, upload_id=None, preserve_type=False):
     try:
         ext = os.path.splitext(file_path)[-1].lower()
         if ext in [".pdf", ".pptx", ".jpg", ".jpeg", ".png"]:
@@ -81,11 +74,16 @@ def process_file(file_path, upload_id=None):
             raw = extract_xlsx(file_path)
         elif ext == ".csv":
             raw = extract_csv(file_path)
+        elif ext == ".txt":
+            raw = extract_txt(file_path)
         else:
             raw = "Unsupported file format."
         if upload_id:
             progress[upload_id] = 50
-        result = cleanse_text(raw, upload_id)
+        if not (preserve_type and ext in [".csv", ".xlsx", ".pdf"]):
+            result = cleanse_text(raw, upload_id)
+        else:
+            result = raw
         if upload_id:
             progress[upload_id] = 100
         return result
@@ -131,7 +129,7 @@ def upload_file():
             app.logger.info(f"Worker started for upload_id={upload_id}, file={temp_path}")
             result = None
             try:
-                result = process_file(temp_path, upload_id)
+                result = process_file(temp_path, upload_id, preserve_type=preserve_type)
             except Exception as e:
                 app.logger.error(f"process_file error for {upload_id}: {e}", exc_info=True)
                 progress[upload_id] = -1
