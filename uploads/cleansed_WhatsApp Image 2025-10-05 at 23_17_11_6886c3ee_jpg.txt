@@ -1,0 +1,29 @@
+Image has been anonymized and saved to d:\Optiv\Project\frontend\uploads\processed\cleansed_WhatsApp Image 2025-10-05 at 23.17.11_6886c3ee.jpg
+
+IMAGE DESCRIPTION:
+==================================================
+Document Type: Identification Document
+
+Information Categories Detected:
+  • Phone numbers
+  • Physical addresses
+  • Dates
+
+Document Length: Approximately 69 words
+
+Extracted Content:
+John Smith, a 32-year-old software engineer living at 1234 Elm Street; Springfield; IL, was recently diagnosed with Type 2 Diabetes: His medical records are stored under Patient ID: 45892 at Springfield General Hospital. John's primary email is john smith@example com 7 , and his phone number is +1-555- 234-7890. For payroll, his employer has his Social Security Number (SSN: 123-45-6789) and bank account number 987654321 at First National Bank:
+
+KEY FINDINGS:
+==================================================
+• Phone numbers detected: 2 found
+• Dates mentioned: 23-45-6789
+• Names mentioned: Elm Street, Social Security, First National and others
+• Physical addresses detected: 1 found
+
+• Main content summary:
+  1. John Smith, a 32-year-old software engineer living at 1234 Elm Street; Springfield; IL, was recently diagnosed with Type 2 Diabetes: His medical recor...
+  2. John's primary email is john smith@example com 7 , and his phone number is +1-555- 234-7890
+  3. For payroll, his employer has his Social Security Number (SSN: 123-45-6789) and bank account number 987654321 at First National Bank:
+
+• Frequently mentioned terms: john, number, smith, springfield, bank

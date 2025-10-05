@@ -1,6 +1,5 @@
 import os # For file path operations
 import io# For in-memory byte streams
-import re#  For regex operations
 import spacy#   for NLP tasks
 import fitz  # PyMuPDF
 import docx#  For DOCX files
@@ -23,11 +22,11 @@ anonymizer = AnonymizerEngine()
 
 #spaCy model
 try:
-    nlp = spacy.load("en_core_web_lg")
+    nlp = spacy.load("en_core_web_sm")
 except OSError:
-    print("Downloading 'en_core_web_lg' model...")
-    spacy.cli.download("en_core_web_lg")
-    nlp = spacy.load("en_core_web_lg")
+    print("Downloading 'en_core_web_sm' model...")
+    spacy.cli.download("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 #for cleansing
 def cleanse_text(text):
     if not text or text.isspace():

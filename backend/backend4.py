@@ -1,4 +1,3 @@
-
 import os
 import threading
 import time
@@ -12,9 +11,39 @@ from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
 from streamlit import progress
 import granite_extracion as ge
+import tempfile
+from utils.image_utils import anonymize_image, generate_image_description, generate_key_findings
 
 # Presidio Analyzer and Anonymizer
-analyzer = AnalyzerEngine()
+# Configure analyzer with proper settings to avoid warnings
+from presidio_analyzer.nlp_engine import NlpEngineProvider
+
+# Create NLP engine with configuration to avoid warnings
+nlp_configuration = {
+    "nlp_engine_name": "spacy",
+    "models": [{"lang_code": "en", "model_name": "en_core_web_lg"}],
+    "ner_model_configuration": {
+        "labels_to_ignore": ["CARDINAL"],
+        "model_to_presidio_entity_mapping": {
+            "PERSON": "PERSON",
+            "GPE": "LOCATION",
+            "LOC": "LOCATION",
+            "DATE": "DATE_TIME",
+            "TIME": "DATE_TIME",
+            "ORG": "ORGANIZATION",
+            "NORP": "NRP",
+            "FAC": "LOCATION"
+        },
+        "low_score_entity_names": ["DATE_TIME", "NRP", "LOCATION"]
+    }
+}
+
+# Create NLP engine provider with configuration
+provider = NlpEngineProvider(nlp_configuration=nlp_configuration)
+nlp_engine = provider.create_engine()
+
+# Create analyzer with the configured NLP engine
+analyzer = AnalyzerEngine(nlp_engine=nlp_engine)
 anonymizer = AnonymizerEngine()
 
 # Flask app setup
@@ -23,7 +52,6 @@ CORS(app)
 
 # Simple in-memory progress tracker
 progress = {}
-
 
 # --- Cleanse / Anonymize text using Presidio ---
 def cleanse_text(text, *args, **kwargs):
@@ -71,9 +99,57 @@ def extract_xlsx(file_path):
 def process_file(file_path, upload_id=None, preserve_type=False):
     try:
         ext = os.path.splitext(file_path)[-1].lower()
+        output_path = None
+        
+        # Handle image files with preserve_type option
+        if preserve_type and ext in [".jpg", ".jpeg", ".png"]:
+            # Create output path with "cleansed_" prefix
+            filename = os.path.basename(file_path)
+            output_dir = os.path.join(os.path.dirname(file_path), "processed")
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+            output_path = os.path.join(output_dir, f"cleansed_{filename}")
+            
+            # Get API key for Gemini (if available)
+            api_key = os.getenv("GEMINI_API_KEY", "")
+            
+            # Process image using image_utils directly
+            try:
+                # 1. Anonymize the image
+                anonymize_image(file_path, output_path, "Anonymize all personally identifiable information in the image.")
+                
+                # 2. Generate image description and key findings if API key is available
+                description = ""
+                findings = ""
+                if api_key:
+                    description = generate_image_description(file_path, api_key)
+                    findings = generate_key_findings(file_path, api_key)
+                
+                # Generate a text description of the processed image
+                image_description = f"Image has been anonymized and saved to {output_path}\n\n"
+                
+                if description:
+                    image_description += "IMAGE DESCRIPTION:\n"
+                    image_description += "=" * 50 + "\n"
+                    image_description += description + "\n\n"
+                
+                if findings:
+                    image_description += "KEY FINDINGS:\n"
+                    image_description += "=" * 50 + "\n"
+                    image_description += findings
+                
+                if upload_id:
+                    progress[upload_id] = 100
+                return image_description
+                
+            except Exception as e:
+                if upload_id:
+                    progress[upload_id] = -1
+                raise Exception(f"Error processing image: {str(e)}")
+        
+        # Normal processing for other file types
         if ext in [".pdf", ".pptx", ".jpg", ".jpeg", ".png"]:
             raw = ge.extract_with_granite_docling(file_path, upload_id)
-        
         elif ext in [".doc", ".docx"]:
             raw = extract_docx(file_path)
         elif ext == ".xlsx":
@@ -84,14 +160,18 @@ def process_file(file_path, upload_id=None, preserve_type=False):
             raw = extract_txt(file_path)
         else:
             raw = "Unsupported file format."
+            
         if upload_id:
             progress[upload_id] = 50
+            
         if not (preserve_type and ext in [".csv", ".xlsx", ".pdf"]):
             result = cleanse_text(raw, upload_id)
         else:
             result = raw
+            
         if upload_id:
             progress[upload_id] = 100
+            
         return result
     except Exception as e:
         if upload_id:

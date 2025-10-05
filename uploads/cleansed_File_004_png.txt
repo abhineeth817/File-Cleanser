@@ -1,0 +1,20 @@
+Image has been anonymized and saved to d:\Optiv\Project\frontend\uploads\processed\cleansed_File_004.png
+
+IMAGE DESCRIPTION:
+==================================================
+Document Type: Identification Document
+
+
+Document Length: Approximately 78 words
+
+Extracted Content:
+CERTIFICATE OF Data Destruction This certifies that the following data and associated digital files have been permanently destroyed in compliance with data protection regulations and security standards: Type of Data Destroyed: Confidential client data, backup files, and encrypted records Quantity Destroyed: 1,000 GB of data Destruction Method: Secure data wiping and physical destruction of storage devices The above data has been irreversibly destroyed to prevent unauthorized access and ensure compliance with privacy laws: Javier Jacobs Data Security Officer
+
+KEY FINDINGS:
+==================================================
+• Names mentioned: Data Destroyed, Javier Jacobs, Quantity Destroyed and others
+
+• Main content summary:
+  1. CERTIFICATE OF Data Destruction This certifies that the following data and associated digital files have been permanently destroyed in compliance with...
+
+• Frequently mentioned terms: data, destroyed, destruction, files, compliance

@@ -1,1 +1,24 @@
-MONTH: <DATE_TIME>: 2023 VISITORS LOG BOOK - PLEASE SIGN IN <DATE_TIME>: <DATE_TIME>: 2023 TIME TIME # DATE NAME REASONFORVISIT <PERSON> IN OST <PERSON> <DATE_TIME> 10.25ant 11.35am 02 <DATE_TIME> <PERSON>
+Image has been anonymized and saved to d:\Optiv\Project\frontend\uploads\processed\cleansed_File_003.png
+
+IMAGE DESCRIPTION:
+==================================================
+Document Type: Unknown Document
+
+Information Categories Detected:
+  • Dates
+  • Personal names
+
+Document Length: Approximately 38 words
+
+Extracted Content:
+VISITORS LOG BOOK PLEASE SIGN IN MONTH: MArch YEAR: 2023 TIME TIME DATE NAME REASON FOR ViISIT SIGN INITIALS OUT 22 /03/23 Kate Hopkivs Sales Demo 10 25am 1135am "Tepkin, 02 22/03/23 Kelly Van Stom Meeting James itodden"
+
+KEY FINDINGS:
+==================================================
+• Dates mentioned: 22/03/23
+• Names mentioned: Kate Hopkivs, Stom Meeting, Kelly Van and others
+
+• Main content summary:
+  1. VISITORS LOG BOOK PLEASE SIGN IN MONTH: MArch YEAR: 2023 TIME TIME DATE NAME REASON FOR ViISIT SIGN INITIALS OUT 22 /03/23 Kate Hopkivs Sales Demo 10 ...
+
+• Frequently mentioned terms: sign, time, visitors, book, please

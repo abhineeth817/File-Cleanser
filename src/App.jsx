@@ -20,7 +20,8 @@ export default function App() {
     const form = new FormData();
     form.append("file", file);
     // Add preserveType flag if relevant
-    if (preserveType && (file.name.endsWith('.csv') || file.name.endsWith('.xlsx') || file.name.endsWith('.pdf'))) {
+    if (preserveType && (file.name.endsWith('.csv') || file.name.endsWith('.xlsx') || file.name.endsWith('.pdf') || 
+        file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png'))) {
       form.append("preserve_type", "true");
     }
     try {
@@ -111,8 +112,9 @@ export default function App() {
       </div>
 
       {/* Upload Button */}
-      {/* Preserve file type checkbox for CSV/XLSX/PDF */}
-      {file && (file.name.endsWith('.csv') || file.name.endsWith('.xlsx') || file.name.endsWith('.pdf')) && (
+      {/* Preserve file type checkbox for CSV/XLSX/PDF/Images */}
+      {file && (file.name.endsWith('.csv') || file.name.endsWith('.xlsx') || file.name.endsWith('.pdf') || 
+                file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png')) && (
         <div className="mt-4 flex items-center justify-center">
           <input
             type="checkbox"

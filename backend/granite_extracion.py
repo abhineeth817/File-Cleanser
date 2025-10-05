@@ -244,8 +244,6 @@ def extract_image_granite(file_path, upload_id=None):
         for line in lines_tokens:
             row_text = " ".join([tk["text"] for tk in line]).strip()
             output_lines.append(row_text)
-        if upload_id:
-            progress[upload_id] = 100
         return "\n".join(output_lines)
     texts = []
     for element, _ in getattr(doc, "iterate_items", lambda: [])():
@@ -254,8 +252,6 @@ def extract_image_granite(file_path, upload_id=None):
             texts.append(str(value))
     if texts:
         return "\n".join(texts)
-    if upload_id:
-        progress[upload_id] = 100
     return "No text extracted from image."
 
 # --- Dispatcher ---
