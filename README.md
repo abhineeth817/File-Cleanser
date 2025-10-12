@@ -49,7 +49,7 @@ It uses <b>NLP</b>, <b>OCR</b>, and <b>file parsing</b> modules to anonymize dat
 python -m venv .venv
 source .venv/bin/activate   # or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
-python backend32.py
+python backend34.py
 </code></pre>
 
 <h3>2️⃣ Frontend Setup (React)</h3>
