@@ -1,37 +1,37 @@
-<h1>🧹 File Cleanser</h1>
+<h1> File Cleanser</h1>
 <h3>An AI-powered web app to automatically detect and cleanse sensitive data (PII) from multiple file formats.</h3>
 
 <hr>
 
-<h2>🚀 Overview</h2>
+<h2> Overview</h2>
 <p><b>File Cleanser</b> is a <b>React + Flask</b> application that removes <b>Personally Identifiable Information (PII)</b> from documents of various formats.  
 It uses <b>NLP</b>, <b>OCR</b>, and <b>file parsing</b> modules to anonymize data while preserving document structure and readability.</p>
 
 <hr>
 
-<h2>🧠 Key Features</h2>
+<h2> Key Features</h2>
 <ul>
-  <li>🗂 <b>Multi-format Support:</b> TXT, DOCX, XLSX, CSV, PDF, PPTX, and Images</li>
-  <li>🔍 <b>PII Detection:</b> Identifies names, emails, phone numbers, and other sensitive information</li>
-  <li>🧩 <b>Dual Output Options:</b>
+  <li> <b>Multi-format Support:</b> TXT, DOCX, XLSX, CSV, PDF, PPTX, and Images</li>
+  <li> <b>PII Detection:</b> Identifies names, emails, phone numbers, and other sensitive information</li>
+  <li> <b>Dual Output Options:</b>
     <ul>
       <li>Cleansed <b>text file</b></li>
       <li>Cleansed file in its <b>original format</b> (except PPT)</li>
     </ul>
   </li>
-  <li>🤖 <b>AI-Powered Extraction:</b>
+  <li> <b>AI-Powered Extraction:</b>
     <ul>
       <li>Uses <b>Docling</b> for precise OCR-based text extraction from images</li>
       <li>Uses <b>fitz (PyMuPDF)</b>, <b>openpyxl</b>, and <b>docx</b> for other file types</li>
     </ul>
   </li>
-  <li>🧼 <b>Anonymization:</b> Employs <b>Presidio Analyzer</b> and <b>Presidio Anonymizer</b> for PII redaction</li>
-  <li>⚙️ <b>Flask API Backend</b> connects seamlessly with the <b>React frontend</b></li>
+  <li> <b>Anonymization:</b> Employs <b>Presidio Analyzer</b> and <b>Presidio Anonymizer</b> for PII redaction</li>
+  <li> <b>Flask API Backend</b> connects seamlessly with the <b>React frontend</b></li>
 </ul>
 
 <hr>
 
-<h2>🧩 Tech Stack</h2>
+<h2> Tech Stack</h2>
 <ul>
   <li><b>Frontend:</b> React</li>
   <li><b>Backend:</b> Python (Flask)</li>
@@ -42,9 +42,9 @@ It uses <b>NLP</b>, <b>OCR</b>, and <b>file parsing</b> modules to anonymize dat
 
 <hr>
 
-<h2>⚙️ Setup and Run</h2>
+<h2> Setup and Run</h2>
 
-<h3>1️⃣ Backend Setup (Python)</h3>
+<h3>1 Backend Setup (Python)</h3>
 <pre><code>cd backend
 python -m venv .venv
 source .venv/bin/activate   # or .venv\Scripts\activate on Windows
@@ -52,7 +52,7 @@ pip install -r requirements.txt
 python backend34.py
 </code></pre>
 
-<h3>2️⃣ Frontend Setup (React)</h3>
+<h3>2️ Frontend Setup (React)</h3>
 <pre><code>cd frontend
 npm install
 npm start
@@ -62,7 +62,7 @@ npm start
 
 <hr>
 
-<h2>📂 Project Workflow</h2>
+<h2> Project Workflow</h2>
 <ol>
   <li><b>File Upload:</b> User uploads a document via the React frontend</li>
   <li><b>Backend Processing:</b>
@@ -78,7 +78,7 @@ npm start
 
 <hr>
 
-<h2>💡 Challenges & Solutions</h2>
+<h2> Challenges & Solutions</h2>
 <table>
   <thead>
     <tr>
@@ -97,7 +97,7 @@ npm start
 
 <hr>
 
-<h2>👨‍💻 Contributors</h2>
+<h2> Contributors</h2>
 <ul>
   <li><b>Shivadev Manojkumar</b> </li>
   <li><b>Abhineeth Anoop</b> </li>
